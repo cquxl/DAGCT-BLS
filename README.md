@@ -28,9 +28,9 @@ Fig. 2 The submodules’ structure of DAGCT-BLS.
 
 ## Main Results
 
-DAGCT-BLS can achieve the best predictionperformance and have strong interpretability with **40%~90%** **relative improvement** on seven benchmarks, covering two theoretical chaotic datasets (Loren, Rossler) and one real-word chaotic dataset (Sea clutter).
+DAGCT-BLS can achieve the best predictionperformance and have strong interpretability with **40%~90%** **relative improvement** on seven benchmarks, covering two theoretical chaotic datasets (Loren, Rossler) and one real-word chaotic dataset (Sea clutter)
 
-![1713358278908](image/README/1713358278908.png)
+![1713358449949](image/README/1713358449949.png)
 
 ## Get Started
 
