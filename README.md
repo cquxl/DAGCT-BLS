@@ -16,7 +16,7 @@ Fig. 1 The framework of DAGCT-BLS.
 
 2. Dynamic Adaptive Graph Convolutional Network (DAGCN) & Transformer encoder with phase-segment-wise embedding
 
-In this paper, we try to use GCN to capture the spatial dependence of chaotic time series in different variables. Unfortunately, for the multi-dimensional chaotic time series, there isnt a priori adjacency matrix. Inspired by Node Adaptive Parameter Learning, we design a dynamic adaptive graphical convolu­tional network (DAGCN) to learn the spatial correlation of different variables in phase space. In addition, we capture the temporal dependence of multiple phase points using Transformers multi-head attention (MHA)
+In this paper, we try to use GCN to capture the spatial dependence of chaotic time series in different variables. Unfortunately, for the multi-dimensional chaotic time series, there isn't a priori adjacency matrix. Inspired by Node Adaptive Parameter Learning, we design a dynamic adaptive graphical convolu­tional network (DAGCN) to learn the spatial correlation of different variables in phase space. In addition, we capture the temporal dependence of multiple phase points using Transformers multi-head attention (MHA).
 
 ![1713351280509](image/README/1713351280509.png)
 
@@ -28,7 +28,7 @@ Fig. 2 The submodules’ structure of DAGCT-BLS.
 
 ## Main Results
 
-DAGCT-BLS can achieve the best predictionperformance and have strong interpretability with **40%~90%** **relative improvement** on seven benchmarks, covering two theoretical chaotic datasets (Loren, Rossler) and one real-word chaotic dataset (Sea clutter)
+DAGCT-BLS can achieve the best predictionperformance and have strong interpretability with **40%~90%** **relative improvement** on seven benchmarks, covering two theoretical chaotic datasets (Loren, Rossler) and one real-word chaotic dataset (Sea clutter).
 
 ![1713358449949](image/README/1713358449949.png)
 
