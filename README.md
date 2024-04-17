@@ -12,7 +12,7 @@ We propose the Dy­namic Adaptive Graph Convolutional Transformer with the Broad
 
 ![1713350887614](image/README/1713350887614.png)
 
-<center>Fig. 1 The framework of DAGCT-BLS.
+<center>Fig. 1 The framework of DAGCT-BLS.</center>
 
 2. Dynamic Adaptive Graph Convolutional Network (DAGCN) & Transformer encoder with phase-segment-wise embedding
 
@@ -20,7 +20,7 @@ In this paper, we try to use GCN to capture the spatial dependence of chaotic ti
 
 ![1713351280509](image/README/1713351280509.png)
 
-<center>Fig. 2 The submodules’ structure of DAGCT-BLS.
+<center>Fig. 2 The submodules’ structure of DAGCT-BLS.</center>
 
 ## Get Started
 
