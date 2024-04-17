@@ -1,0 +1,24 @@
+# DAGCT_BLS  🚀 by Xiong Lang
+# Rossler dataset
+# dx/dt=-(y+z); dy/dt=x+ay; dz/dt=b+z(x-c)
+
+a: 0.2
+b: 0.2
+c: 5.9
+
+total_length: 4000
+train_length: 3000
+channel: 3
+num_time_steps_in: 1
+num_time_steps_out: 1
+slide_step: 1
+num_nodes: 3
+
+predict_feature: x
+predict_step: 1
+#predict_feature, self.args.predict_step
+train_size: 0.7
+
+mode: train
+features: ['x', 'y', 'z']
+normalizer: MinMaxScaler

@@ -1,0 +1,19 @@
+# DGACT-BLS  🚀 by Xiong Lang
+
+mode: train
+
+model: # (str, optional) path to model file, i.e. gstrgct.yaml
+data: # (str, optional) path to data file, i.e. pems04.yaml
+epochs: 100 # (int) number of epochs to train for
+patience: 100
+batch_size: 100
+device:  'cuda:0'# (int | str | list, optional) device to run on, i.e. cuda device=0 or device=0,1,2,3 or device=cpu
+num_workers: 0 # (int) number of worker threads for data loading
+optimizer:  # (str) optimizer to use, choices=[SGD, Adam, Adamax, AdamW, NAdam, RAdam, RMSProp, auto]
+verbose: True  # (bool) whether to print verbose output
+seed: 42  # (int) random seed for reproducibility
+resume: False  # (bool) resume training from last checkpoint
+
+# Hyperparameters --------------------------------------------------------------------------
+lr: 0.0001
+

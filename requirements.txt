@@ -1,0 +1,11 @@
+torch
+numpy
+tabulate
+loguru
+scikit-learn
+yaml
+pyyaml
+pandas
+matplotlib
+einops
+protobuf==3.19.0

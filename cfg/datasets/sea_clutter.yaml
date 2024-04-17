@@ -1,0 +1,26 @@
+# DAGCT_BLS  🚀 by Xiong Lang
+# Sea clutter dataset
+# IPIX1993 radar data made public by McMaster University, Canada
+# file name 19931111_163625_starea.cdf
+
+alpha: 10
+beta: 8/3
+gama: 28
+total_length: 4000
+train_length: 3000
+channel: 14
+num_time_steps_in: 1
+num_time_steps_out: 1
+slide_step: 1
+num_nodes: 14
+
+predict_feature: 'feature_0'
+predict_step: 1
+#predict_feature, self.args.predict_step
+train_size: 0.7
+
+mode: train
+features: ['feature_0', 'feature_1', 'feature_2', 'feature_3', 'feature_4', 'feature_5',
+           'feature_6', 'feature_7', 'feature_8', 'feature_9', 'feature_10',
+           'feature_11', 'feature_12', 'feature_13', 'feature_14']
+normalizer: MinMaxScaler

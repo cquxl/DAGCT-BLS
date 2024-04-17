@@ -1,0 +1,27 @@
+# DAGCT_BLS  🚀 by Xiong Lang
+# Lorenz dataset
+# dx/dt= alpha*(y-x); dy/dt=(gama-z)*x-y; dz/dt=xy-beta*z
+# 无需添加
+alpha: 10
+beta: 8/3
+gama: 28
+total_length: 4000
+
+# 需添加
+train_length: 3000
+channel: 3
+num_time_steps_in: 1
+num_time_steps_out: 1
+slide_step: 1
+
+num_nodes: 3
+
+predict_feature: x
+predict_step: 1
+#predict_feature, self.args.predict_step
+train_size: 0.7
+
+
+mode: train
+features: ['x', 'y', 'z']
+normalizer: MinMaxScaler
