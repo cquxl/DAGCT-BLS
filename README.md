@@ -24,11 +24,9 @@ In this paper, we try to use GCN to capture the spatial dependence of chaotic ti
 Fig. 2 The submodules’ structure of DAGCT-BLS.
 </div>
 
-
-
 ## Main Results
 
-DAGCT-BLS can achieve the best predictionperformance and have strong interpretability with **40%~90%** **relative improvement** on seven benchmarks, covering two theoretical chaotic datasets (Loren, Rossler) and one real-word chaotic dataset (Sea clutter).
+DAGCT-BLS can achieve the best prediction performance and have strong interpretability with **40%~90%** **relative improvement** on seven benchmarks, covering two theoretical chaotic datasets (Lorenz, Rossler) and one real-word chaotic dataset (Sea clutter).
 
 ![1713358449949](image/README/1713358449949.png)
 
