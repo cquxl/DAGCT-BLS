@@ -37,7 +37,7 @@ DAGCT-BLS can achieve the best prediction performance and have strong interpreta
 3. Train and test the model
 
 ```cmd
-git clone git@github.com:CQUTLangXiong/DAGCT-BLS.git
+git clone git@github.com:cquxl/DAGCT-BLS.git
 cd DAGCT-BLS
 python main.py
 ```
