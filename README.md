@@ -67,4 +67,4 @@ If you find this repo useful, please cite our paper.
 
 ## Contact
 
-If you have any questions or want to use the code, please contact xionglang@stu.cqut.edu.cn
+If you have any questions or want to use the code, please contact 20241401008@stu.cqu.edu.cn/xionglang@stu.cqut.edu.cn/840015412@qq.com
