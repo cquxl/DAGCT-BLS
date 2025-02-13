@@ -14,7 +14,6 @@ class DAGCT_BLS_GenArgs(BaseArgs):
 
     def _gen_model_args(self):
         # -----------------------------------------3. model----------------------------------------#
-        # 公有的predict_mode
         self.parser.add_argument('--predict_mode', default=self.cfg['predict_mode'],
                                  help="predict_mode")  # generate or slide window
 
