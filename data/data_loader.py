@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from utils import normalize, setup_seed
 
 
-# 设置随机数种子
+
 setup_seed(42)
 
 
@@ -29,10 +29,7 @@ class ChaoticDataset(Dataset):
                  enh_fea_num=41, enh_num=1,
                  root_path='../dataset',
                  type='lorenz', mode='train', predict_mode='generate'):
-        '''
-        mode:train-->训练集的dataste,
-        predict_mode = 'generate'/'slide window'
-        '''
+
         self.file_name = os.path.join(root_path, 'multi_bls_data', type, '%s_%s' % (predict_feature, predict_step))
         self.win_size = win_size
         self.slide_step = slide_step
@@ -44,7 +41,7 @@ class ChaoticDataset(Dataset):
         self.predict_mode = predict_mode
         self.fb = FrozenBLS(map_fea_num, map_num, enh_fea_num, enh_num,
                             type=type, root_path=os.path.join(root_path, 'standard_data'))
-        # 生成下，X,Y
+  
         if predict_mode == 'generate':
             X, Y = self.fb.split_data(predict_feature, predict_step, train_length, file_dir=os.path.join(root_path, 'multi_bls_data'),
                                       is_split=False, no_bls=False)
@@ -57,7 +54,7 @@ class ChaoticDataset(Dataset):
         else:
             raise ValueError
 
-        # 标准化
+  
         if self.type == 'lorenz' or self.type == 'rossler':
             self.features = ['x', 'y', 'z']
         if self.type == 'sea_clutter':
@@ -70,7 +67,7 @@ class ChaoticDataset(Dataset):
         self.X = np.array(self.X)
         self.y_scaler = normalize(default='MinMaxScaler')
         self.Y = self.y_scaler.fit_transform(Y)
-        # 划分训练集、验证集、测试集
+   
         assert self.X.shape[1] > self.train_length
         self.data = self.X[:,:self.train_length,:]        # [3,3000,71]
         self.label = self.Y[:self.train_length,:]         # [3000,1]
@@ -119,7 +116,7 @@ class ChaoticDataset(Dataset):
             raise ValueError
 
     def __getitem__(self, item):
-        index = item * self.slide_step # 每次向前跳步slide_step
+        index = item * self.slide_step 
         if self.mode == "train": # train, train_label
             if self.predict_mode == 'generate':
                 return np.float32(self.train[:, index:index+self.win_size, :]), \
