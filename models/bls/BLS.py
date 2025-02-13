@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 def tansig(x):
     return (2/(1+np.exp(-2*x)))-1
 
-# 稀疏化编码mapping features
+
 def shrinkage(a, b):
     z = np.maximum(a - b, 0) - np.maximum( -a - b, 0)
     return z
@@ -102,10 +102,10 @@ class BLS:
             HH1 = np.hstack([x, 0.1 * np.ones([x.shape[0], 1])])
             yy1 = np.zeros([x.shape[0], self.map_num * self.map_fea_num])
             for i in range(self.map_num):
-                map_sparse_fea_weight = self.wf_sparse[i]  # 这里至关重要他是从训练集计算来的
-                # 计算测试集的稀疏映射特征
+                map_sparse_fea_weight = self.wf_sparse[i] 
+  
                 TT1 = HH1.dot(map_sparse_fea_weight)
-                TT1 = (TT1 - self.meanOfEachWindow[i]) / self.distOfMaxAndMin[i] # min,max也是训练集得来的
+                TT1 = (TT1 - self.meanOfEachWindow[i]) / self.distOfMaxAndMin[i] 
                 yy1[:, self.map_fea_num * i:self.map_fea_num * (i + 1)] = TT1
             combine_features = yy1
             for i in range(self.enh_num):
