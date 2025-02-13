@@ -137,10 +137,10 @@ class EncoderLayer(nn.Module):
             x, x, x,
             attn_mask=attn_mask
         )
-        x = x + self.dropout(new_x) # 残差连接--[b,n,l,c]
+        x = x + self.dropout(new_x) #[b,n,l,c]
         x = self.norm1(x)
         y = x  # [b,n,l,c]-->[64,3,100,512]
-        # y = self.dropout(self.activation(self.conv1(y.transpose(-1, 1)))) # 前馈神经网络-->[64, 4*512, 12]
+        # y = self.dropout(self.activation(self.conv1(y.transpose(-1, 1)))) # -->[64, 4*512, 12]
         y = self.dropout(self.activation(self.conv1(y.permute(0,3,2,1))))
         # y = self.dropout(self.conv2(y).transpose(-1, 1))  # [84,512,12]-->[64,12,512]
         y = self.dropout(self.conv2(y).permute(0,3,2,1))
@@ -174,9 +174,6 @@ class Encoder(nn.Module):
         return x, attns
 
 class Transformer(nn.Module):
-    '''
-    生成预测不需要对time_steps进行变形
-    '''
     def __init__(self, num_nodes, seg_len, in_channels, d_model,
                  n_heads, dropout, num_layers, output_attention=True):
         super(Transformer, self).__init__()
@@ -204,11 +201,9 @@ class Transformer(nn.Module):
         # x = x.permute(2,1,0,3) # [1,3,100,71]
         enc_in = self.embedding(x) # [100,3,100,512]
         enc_out, attns = self.encoder(enc_in, attn_mask=None) #
-        # 是否norm以下
         enc_out = self.norm(enc_out)
 
         # dec_out = self.decoder(enc_out) # [100,3,100,1]
-        # # 只预测x
         # dec_out = dec_out[:,0,:,:] # [100,100,1]
         return F.relu(enc_out), torch.stack(attns, dim=0)
 
