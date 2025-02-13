@@ -12,7 +12,7 @@ import torch
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.tensorboard import SummaryWriter
 
-from exp import Exp      # Exp是实验的一些参数数据，
+from exp import Exp      
 from utils import setup_logger, EarlyStopping, get_all_result, JSONEncoder
 import sys
 from .base_trainer import BaseTrainer
@@ -20,10 +20,6 @@ from .base_trainer import BaseTrainer
 
 
 class DAGCT_BLS_Trainer(BaseTrainer):
-    '''
-    exp: 训练网络实验相关需要设置的数据加载，optimizer学习率调度等
-    args: 数据以及模型的超参数
-    '''
 
     def __init__(self, exp, args):
         super().__init__()
@@ -33,7 +29,7 @@ class DAGCT_BLS_Trainer(BaseTrainer):
         self.device = self.exp.get_device()
         # self.device = torch.device('cuda')
         # self.use_model_ema =True
-        # 梯度裁剪
+ 
         self.grad_clip = True
         self.real_value = False
         # self.in_len = self.args.in_len
@@ -44,15 +40,13 @@ class DAGCT_BLS_Trainer(BaseTrainer):
         self.out_len = self.args.num_time_steps_out
         self.log_interval = 10
         self.patience = 100
-        # 运行时间
+      
         self.train_time = 0
         self.inference_time = 0
-        # 参数量
+    
         self.total_params = 0
 
-        # 实验输出文件名
-        # args.name为模型名字
-        self.file_name = os.path.join(exp.output_dir, args.name, args.dataset, args.experiment_name)  # 该文件夹用来输出logger
+        self.file_name = os.path.join(exp.output_dir, args.name, args.dataset, args.experiment_name)  
         self.logger = setup_logger(self.args.mode, self.file_name)
         logger.remove()
         self.logger.level("INFO")
@@ -67,11 +61,8 @@ class DAGCT_BLS_Trainer(BaseTrainer):
             self.after_train()
 
     def before_train(self):
-        '''
-        加载模型相关参数
-        '''
 
-        # self.logger.info(f'args:{self.args}')  # 参数打印
+        # self.logger.info(f'args:{self.args}')  
         # self.logger.info(f'exp value: \n{self.exp}')
 
         # model init
@@ -93,7 +84,7 @@ class DAGCT_BLS_Trainer(BaseTrainer):
                         format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> "
                                "| <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
                                "<level>{message}</level>")
-        self.logger.info(f'args:{self.args}')  # 参数打印
+        self.logger.info(f'args:{self.args}') 
         self.logger.info(f'exp value: \n{self.exp}')
         self.logger.info(f'Model Summary:{self.model}')
         self.logger.info("Model Total Prameters:%.2fM" % (self.total_params / 1e6))
@@ -109,16 +100,13 @@ class DAGCT_BLS_Trainer(BaseTrainer):
         return self.tb_logger
 
     def train_in_epochs(self):
-        '''
-        epochs迭代训练
-        '''
+
         self.early_stopping = EarlyStopping(self.patience, verbose=True, delta=0)
         count = 0
         for epoch in range(self.args.epochs):
             self.train_one_epoch(epoch)
             count += 1
             if self.early_stopping.early_stop:
-                # 以达到触发条件
                 self.val_best_loss = self.early_stopping.val_loss_min
                 self.logger.info('Early stopping')
                 break
@@ -130,14 +118,11 @@ class DAGCT_BLS_Trainer(BaseTrainer):
         self.total_params = self.total_params / 1e6
         train_metrics = {'totoal_params': self.total_params,
                          'train time': self.run_time}
-        # 存成json
+
         with open(os.path.join(self.file_name, 'train_metrics.json'), 'w') as f:
             json.dump(train_metrics, f)
 
     def train_one_epoch(self, epoch):
-        '''
-        返回训练集的每个epoch的平均损失
-        '''
         self.logger.info(f'epoch {epoch} start training')
         total_loss = 0
         epoch_loss = 0
@@ -154,14 +139,11 @@ class DAGCT_BLS_Trainer(BaseTrainer):
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), 0.5)
             self.optimizer.step()
 
-            # 由于数据集滑动时存在重复的数据集
             loss1, _, _ = self.compute_order_loss(st_outputs, y)
 
             total_loss += loss1.item()
             epoch_loss += loss1.item()
-            # 每隔10次打印一下
             if (batch_idx + 1) % self.log_interval == 0 and batch_idx > 0:
-                # 当前batch的损失
                 cur_loss = total_loss / self.log_interval
                 elapsed_time = time.time() - start_time
                 self.logger.info(f"| epoch {epoch:3d} | {batch_idx + 1:5d}/{len(self.train_loader):5d} batches | "
@@ -169,16 +151,16 @@ class DAGCT_BLS_Trainer(BaseTrainer):
                                  f"iter time {elapsed_time / self.log_interval:5.2f} s | loss {cur_loss:5.5f}")
                 total_loss = 0
                 start_time = time.time()
-        # 单个epoch花费的时间
+
         each_epoch_time = time.time() - epoch_time
         self.train_time += each_epoch_time
         self.logger.info(f" Epoch:{epoch} training end, cost time: {each_epoch_time} s")
-        # 计算该epoch 的平均损失作为训练损失
+  
         train_loss = epoch_loss / len(self.train_loader)
         val_loss = self.vali_one_epoch(self.val_loader)
         test_loss = self.vali_one_epoch(self.test_loader)
 
-        # tensorboard绘制损失
+
         self.tb_logger.add_scalar('train_loss', train_loss, epoch)
         self.tb_logger.add_scalar('val_loss', val_loss, epoch)
         self.tb_logger.add_scalar('test_loss', test_loss, epoch)
@@ -201,11 +183,11 @@ class DAGCT_BLS_Trainer(BaseTrainer):
                 st_outputs, s_out, t_out = self.model(x)
                 loss1, _, _ = self.compute_order_loss(st_outputs, y)
                 total_loss += loss1.item()
-        self.model.train()  # 恢复至训练模式
+        self.model.train()  
         return total_loss / len(self.val_loader)
 
     def compute_order_loss(self, outputs, y):
-        # 由于数据集滑动时存在重复的数据集
+
         output1 = outputs[0,:,:].reshape(-1,1)  # [3,307]
         target1 = y[0,:,:].reshape(-1,1)
         for i in range(outputs.shape[0]):
@@ -214,7 +196,7 @@ class DAGCT_BLS_Trainer(BaseTrainer):
             else:
                 output1 = torch.cat((output1,outputs[i, -1,-1].reshape(-1,1)),dim=0)  # [1, 307]
                 target1 = torch.cat((target1,y[i, -1,-1].reshape(-1,1)),dim=0)
-        # 计算wise的mse loss
+
         loss = self.criterion(output1, target1)
         return loss, output1.cpu().detach(), target1.cpu().detach()
 
@@ -229,7 +211,7 @@ class DAGCT_BLS_Trainer(BaseTrainer):
         if checkpoint is not None and os.path.exists(checkpoint):
             model_dict = torch.load(self.args.checkpoint, map_location='cpu')
             self.model.load_state_dict(model_dict)
-        else:  # 文件不存在打印日志
+        else:  
             error_message = f"checkpoint file not found: {checkpoint} or checkpoint is None"
             logger.error(error_message)
             raise FileNotFoundError(error_message)
@@ -250,26 +232,26 @@ class DAGCT_BLS_Trainer(BaseTrainer):
                 st_outputs, s_out, t_out = self.model(x)
                 batch_time = time.time() - start
                 evaluate_time += batch_time
-                if self.real_value:  # 此时st_outputs为真实的预测, inverse可以用tensor，但返回来的是Numpy？
-                    # inverse一下
+                if self.real_value:  
+              
                     y_batch = []
                     for i in range(y.shape[0]):
-                        y_b = self.exp.y_scaler.inverse_transform(y[i].cpu().detach())  # y_b是numpy array
+                        y_b = self.exp.y_scaler.inverse_transform(y[i].cpu().detach())  
                         y_batch.append(y_b)
                     y_batch = torch.as_tensor(np.stack(y_batch))
-                    # 非重复真实与预测
-                    _, output, target = self.compute_order_loss(st_outputs.cpu().detach(), y_batch)  # 返回单个batch的值
+                  
+                    _, output, target = self.compute_order_loss(st_outputs.cpu().detach(), y_batch) 
                     if batch_idx == 0:
                         e_output = output
                         e_target = target
                     else:
-                        # 每次重复out_len-1个
+                        
                         e_output = torch.cat((e_output, output[self.out_len - 1, :]), dim=0)  # [l,307
                         e_target = torch.cat((e_target, target[self.out_len - 1, :]), dim=0)
-                else:  # 表示是标准化的输入输出
+                else:  
                     e_output, e_target = self.process_batch(e_output, e_target, st_outputs, y, batch_idx,
                                                             inverse=inverse)
-        # 计算metrics, e_output, e_target-->[l,307]
+       
         # mse, rmse, mae, mape, r2 = get_all_result(e_output.numpy(), e_target.numpy(), multiple=True)
         self.inference_time = evaluate_time / len(test_loader)
         mse, rmse, mae, mape, r2 = get_all_result(e_output.numpy().reshape(-1, 1), e_target.numpy().reshape(-1, 1),
@@ -285,19 +267,17 @@ class DAGCT_BLS_Trainer(BaseTrainer):
             f"evaluate result-->mse:{mse:.8f} | rmse:{rmse:.8f} | mae: {mae:.8f} | mape: {mape:.8f} | r2: {r2:.8f} | inference_time: {self.inference_time:.4}s")
         true_pred_dict = {'truth': e_target.numpy(), 'pred': e_output.numpy()}
 
-        # 存成json
+      
         # if not os.path.exists(os.path.join(self.file_name, 'evaluate_metrics.json')):
         with open(os.path.join(self.file_name, 'evaluate_metrics.json'), 'w') as f:
             json.dump(metrics, f, cls=JSONEncoder)
         if save_pred:
-            # 保存真实值和预测值
+            
             np.save(os.path.join(self.file_name, 'true_pred_dict.npy'), true_pred_dict)
         return metrics
 
     def process_batch(self, e_output, e_target, outputs, y, batch_idx, inverse=False):
-        '''
-        该函数用来返回单个epoch的不重复的预测值与真实值,只用于训练是标准化预测即self.real_value为False
-        '''
+
         if inverse:
             y_batch = []
             output_batch = []
@@ -308,13 +288,13 @@ class DAGCT_BLS_Trainer(BaseTrainer):
                 output_batch.append(output_b)
             y_batch = torch.as_tensor(np.stack(y_batch))
             output_batch = torch.as_tensor(np.stack(output_batch))
-            # 非重复真实与预测
+           
             _, output, target = self.compute_order_loss(output_batch, y_batch)  # 返回单个batch的值
             if batch_idx == 0:
                 e_output = output
                 e_target = target
             else:
-                # 每次重复out_len-1个
+               
                 e_output = torch.cat((e_output, output[self.out_len - 1:, :]), dim=0)  # [l,307
                 e_target = torch.cat((e_target, target[self.out_len - 1:, :]), dim=0)
         else:
@@ -334,20 +314,9 @@ class DAGCT_BLS_Trainer(BaseTrainer):
                 for j in range(outputs.shape[0]):
                     e_output = torch.cat((e_output, outputs[j, -1, -1].reshape(-1, 1).cpu()))
                     e_target = torch.cat((e_target, y[j, -1, -1].reshape(-1, 1).cpu()))
-            # _, output, target = self.compute_order_loss(outputs, y)
-            # if batch_idx == 0:
-            #     e_output = output
-            #     e_target = target
-            # else:
-            #     # 每次重复out_len-1个
-            #     e_output = torch.cat((e_output, output[self.out_len - 1:, :]), dim=0)  # [l,307
-            #     e_target = torch.cat((e_target, target[self.out_len - 1:, :]), dim=0)
         return e_output, e_target
 
     def after_train(self):
-        '''
-        训练结束，打印相关信息
-        '''
         self.logger.info(f'training is done, best val loss:{self.val_best_loss}')
 
 
