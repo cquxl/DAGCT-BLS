@@ -7,7 +7,7 @@ class DAGCN_reduce(nn.Module):
     def __init__(self, num_time_steps, num_nodes, in_dims, out_dims, cheb_k, embed_dim, spatial_attention=False):
         '''
         mode:'full','reduce'
-        if reduce dimension: embed_dim必须小于N
+        if reduce dimension: embed_dim<N
         '''
         super(DAGCN_reduce, self).__init__()
         self.num_time_steps = num_time_steps
@@ -18,7 +18,7 @@ class DAGCN_reduce(nn.Module):
         self.embed_dim = embed_dim
         self.spatial_attention = spatial_attention
 
-        # 动态空间节点嵌入向量
+       
         self.dn_embeddings = nn.Parameter(torch.randn(num_time_steps,
                                                       num_nodes,
                                                       embed_dim),
@@ -55,9 +55,7 @@ class DAGCN_reduce(nn.Module):
 
 class DAGCN_full(nn.Module):
     def __init__(self, num_time_steps, num_nodes, in_dims, out_dims, cheb_k, spatial_attention=False):
-        '''
-        不需要embedding
-        '''
+
         super(DAGCN_full, self).__init__()
         self.num_time_steps = num_time_steps
         self.num_nodes = num_nodes
