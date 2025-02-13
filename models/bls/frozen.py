@@ -24,28 +24,28 @@ class FrozenBLS:
         if not os.path.exists(os.path.join(file_dir, save_dir)):
             os.makedirs(os.path.join(file_dir, save_dir))
         file_name = os.path.join(file_dir, save_dir)
-        # 对rec_dict每个维度的数据
+
         assert predict_feature in list(self.rec_dict.keys())
         X_train_bls = []
         X_test_bls = []
         all_X = []
         for feature, rec_data in self.rec_dict.items():
-            # 对rec_data进行bls冻结，若feature是需要预测的，取出对应的y
+            
             x_feature = rec_data[:rec_data.shape[0]-predict_step,:]
 
             # if not is_split:
             if no_bls:
-                # 将X映射到71维度
+                
                 X = np.zeros((x_feature.shape[0], 71))
                 X[:,:x_feature.shape[1]] = x_feature
             else:
                 X = self.bls.generate_features(x_feature, is_train=True)
             all_X.append(X)
-            # 拆分训练集和测试集
+
             assert x_feature.shape[0] > train_length
             train_x = x_feature[:train_length, :]
             test_x = x_feature[train_length:, :]
-            # bls取其特征
+
             bls_train_x = self.bls.generate_features(train_x, is_train=True)
             X_train_bls.append(bls_train_x)
             bls_test_x = self.bls.generate_features(test_x, is_train=False)
@@ -65,7 +65,7 @@ class FrozenBLS:
         if not is_split:
             print(f'All bls X shape:{all_X.shape}')
             print(f'All y shape:{Y.shape}')
-            # 保存数据
+    
             np.save('%s/X_%s.npy' % (file_name,predict_step), all_X)
             np.save('%s/Y_%s.npy' % (file_name,predict_step), Y)
             return all_X, Y
@@ -73,7 +73,7 @@ class FrozenBLS:
         print(f'test bls X shape:{X_test_bls.shape}')
         print(f'train Y shape:{train_y.shape}')
         print(f'test Y shape:{test_y.shape}')
-        # 保存数据
+    
         np.save('%s/X_train_bls.npy' % file_name, X_train_bls)
         np.save('%s/X_test_bls.npy' % file_name, X_test_bls)
         np.save('%s/train_y.npy' % file_name, train_y)
