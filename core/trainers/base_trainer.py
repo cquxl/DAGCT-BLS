@@ -3,7 +3,6 @@ from abc import ABCMeta, abstractmethod
 class BaseTrainer(metaclass=ABCMeta):
     """
     Base class for training
-    抽象方法
     1.
     2.
     """
