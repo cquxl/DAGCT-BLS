@@ -31,9 +31,6 @@ class Exp(BaseExp):
         return self.model
 
     # def get_weight(self):
-    #     '''
-    #     先验空间权重
-    #     '''
     #     self.s_w = WeightProcess(self.args.root_path, self.args.num_nodes, self.args.dataset).s_w
     #     return self.s_w
 
