@@ -14,14 +14,14 @@ from core import *
 torch.backends.cudnn.enable =True
 torch.backends.cudnn.benchmark = True
 os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
-#-----------------------------------------参数文件获取---------------------------------------------#
+
 DATASET = 'lorenz'
 DEVICE = 'cuda:0'
-MODEL = 'DAGCT_BLS'    #  -->改,只需要改此参数即可自动运行
+MODEL = 'DAGCT_BLS'    
 ROOT_PATH = './dataset/'
 
 
-# 读取基本的参数文件
+
 cfg_data_file = 'cfg/datasets/%s.yaml' % DATASET
 cfg_model_file = 'cfg/models/%s.yaml' % (MODEL.lower())
 cfg_default_file = 'cfg/default.yaml'
@@ -35,7 +35,7 @@ cfg_all['ROOT_PATH'] = ROOT_PATH
 cfg_all['EXPERIMENT_NAME'] = EXPERIMENT_NAME
 cfg_all['CHECK_POINT'] = CHECK_POINT
 
-# 模型的参数解析
+
 args = gen_args[MODEL](cfg_all).args
 
 model = get_model_dict(args)[MODEL]
