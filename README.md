@@ -53,12 +53,12 @@ We will keep adding chaotic time series forcasting models to expand this repo:
 
 ## Run Other Datasets
 
-Example: if you want to run other datasets such as "rossler" datasets.
+Example: if you want to run other datasets such as "rossler" dataset.
 
-1. **Obtain the original data**. Firstly, download and save "rossler.csv" in dataset/original_data. If download, see the section of "Get Started"
-2. **Get tau and m value of reconstruction**. Secondly, get the tau and m value of data reconstrcution. You can run the dataset/multi_CCMethod.m in Matlab to get tau and m value and the save them in dataset/rossler_tau_m.xlsx
-3. Reconstruction. Following the example of lorenz in multi_reconstruction.py, just change "type="rossler" in get_final_result function.. Once runing the multi_reconstruction, dataset/reconstruction_data and dataset/standard_data will generate the process rossler data
-4. Train and Test. Modify the appropriate configuration and run man.py. such as in main.py
+1. **Obtain the original data**. Firstly, download and save "rossler.csv" in dataset/original_data. If download, see the section of "Get Started".
+2. **Get tau and m value of reconstruction**. Secondly, get the tau and m value of data reconstrcution. You can run the dataset/multi_CCMethod.m in Matlab to get tau and m value and the save them in dataset/rossler_tau_m.xlsx.
+3. **Reconstruction.** Following the example of lorenz in multi_reconstruction.py, just change "type="rossler" in get_final_result function. Once runing the multi_reconstruction, dataset/reconstruction_data and dataset/standard_data will generate the process rossler data
+4. **Train and Test**. Modify the appropriate configuration and run man.py. such as in main.py
 
 ```
 DATASET="rossler"
