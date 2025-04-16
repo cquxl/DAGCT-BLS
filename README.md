@@ -1,4 +1,4 @@
-# DAGCT-BLS (Applied Soft Computing 2024)
+# ""DAGCT-BLS (Applied Soft Computing 2024)
 
 Dynamic adaptive graph convolutional transformer with broad learning system for multi-dimensional chaotic time series prediction
 
@@ -35,11 +35,12 @@ DAGCT-BLS can achieve the best prediction performance and have strong interpreta
 1. Install Python 3.7, Pytorch 1.11.0, and Cuda 11.5
 2. Download data and use Matlab or Python to reconstruct data. You can download the original three choatic dataset from [Google Drive](https://drive.google.com/drive/folders/1mYoxIYTuIdfbE5y_OfHVWk4cDqMt42Mb?usp=sharing)
 3. Train and test the model
+4. In this readme, we give "lorenz" dataset as example (it has been processd by reconstruction), if you want to restart using other datasets, see the section of "Run Other Datasets"
 
 ```cmd
 git clone git@github.com:cquxl/DAGCT-BLS.git
 cd DAGCT-BLS
-python main.py
+python main.py # default: train mode, you should change the "mode" parameter in main.py if you want to evaluate.
 ```
 
 ## Baselines
@@ -49,6 +50,19 @@ We will keep adding chaotic time series forcasting models to expand this repo:
 - [X] DAGCT-BLS
 - [X] Multi-Attn BLS
 - [X] BLS
+
+## Run Other Datasets
+
+Example: if you want to run other datasets such as "rossler" datasets.
+
+1. **Obtain the original data**. Firstly, download and save "rossler.csv" in dataset/original_data. If download, see the section of "Get Started"
+2. **Get tau and m value of reconstruction**. Secondly, get the tau and m value of data reconstrcution. You can run the dataset/multi_CCMethod.m in Matlab to get tau and m value and the save them in dataset/rossler_tau_m.xlsx
+3. Reconstruction. Following the example of lorenz in multi_reconstruction.py, just change "type="rossler" in get_final_result function.. Once runing the multi_reconstruction, dataset/reconstruction_data and dataset/standard_data will generate the process rossler data
+4. Train and Test. Modify the appropriate configuration and run man.py. such as in main.py
+
+```
+DATASET="rossler"
+```
 
 ## Citation
 
