@@ -1,4 +1,4 @@
-# ""DAGCT-BLS (Applied Soft Computing 2024)
+# DAGCT-BLS (Applied Soft Computing 2024)
 
 Dynamic adaptive graph convolutional transformer with broad learning system for multi-dimensional chaotic time series prediction
 
