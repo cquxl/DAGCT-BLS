@@ -33,7 +33,7 @@ def normalize(default='MinMaxScaler'):
 
 
 def save_dict_to_yaml(dict_value: dict, save_path: str):
-    """dict保存为yaml"""
+    """dict save yaml"""
     with open(save_path, 'w', encoding='utf-8') as file:
         file.write(yaml.dump(dict_value, allow_unicode=True))
 def save_dict_to_json(dict_value: dict, save_path: str):
@@ -54,15 +54,15 @@ def get_cfg(cfg_data_file, cfg_model_file, cfg_default_file):
 
 def print_args_model_info(args, model, print_model=False):
     params = vars(args)
-    # 使用tabulate函数将参数表格化
+
     params_table = tabulate(params.items(), headers=["Parameter", "Value"], tablefmt="grid")
-    # 使用Loguru的logger打印参数表格
+   
     logger.info("\n" + params_table)
-    # 获取模型的层结构
+
     model_architecture = []
     for name, module in model.named_children():
         model_architecture.append((name, module))
-    # 使用tabulate函数将模型架构和参数表格化
+
     architecture_table = tabulate(model_architecture, headers=["Layer Name", "Layer"], tablefmt="grid")
     if print_model:
         logger.info("\n" + "Model Architecture:\n" + architecture_table)

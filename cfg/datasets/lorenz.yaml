@@ -1,13 +1,11 @@
 # DAGCT_BLS  🚀 by Xiong Lang
 # Lorenz dataset
 # dx/dt= alpha*(y-x); dy/dt=(gama-z)*x-y; dz/dt=xy-beta*z
-# 无需添加
 alpha: 10
 beta: 8/3
 gama: 28
 total_length: 4000
 
-# 需添加
 train_length: 3000
 channel: 3
 num_time_steps_in: 1

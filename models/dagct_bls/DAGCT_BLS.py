@@ -20,16 +20,16 @@ class MLPHead(nn.Module):
         out1 = self.linear1(x.permute(0,1,3,2)) #
         # out1 = self.activation(out1) # [B,N,C,pred_len]
 
-        # 预测变量值
+
         out2 = self.linear2(out1.permute(0,1,3,2))
         # out2 = self.activation(out2)   # [B,N,pred_len,c_out]
 
-        # 预测节点值
+  
         out3 = self.linear3(out2.permute(0,2,3,1))
         # out3 = self.activation(out3)   # [B,pred_len,c_out, n_out]
 
         # out = out3.permute(0, 3, 1, 2)  # [B,n_out,pred_len,c_out]
-        # 变成[B, pred_len, 1]
+     
         out = out3.squeeze(-1)
         return out
 

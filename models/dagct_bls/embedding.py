@@ -55,13 +55,9 @@ class PSWEmbedding(nn.Module):
         self.linear = nn.Linear(c_in, d_model)
 
     def forward(self, x): # [B, D, L, F]
-        '''
-        如果L能够整除L_seg-->seg_len分割有效保持不变
-        如果L不能够整除L_seg-->seg_len变成全量集，不需要分割，直接全量值映射
-        '''
         B, D, L, F= x.shape
         try:
-            assert L % self.seg_len == 0, 'L cannot divide L_seg integrally'   # L能整除seg_len
+            assert L % self.seg_len == 0, 'L cannot divide L_seg integrally'   
             x_seg = rearrange(x, 'b d (seg_num seg_l) f -> b d seg_num seg_l f', seg_l=self.seg_len)
             x_embed = self.linear(x_seg) # [b d seg_num seg_l d_model]
             x_pos_embed = self.position_embedding(x_seg).unsqueeze(0).unsqueeze(0) # [1,1,1,seg_l, d_model]
@@ -69,8 +65,6 @@ class PSWEmbedding(nn.Module):
             x_embed = rearrange(x_embed, 'b d seg_num seg_l d_model -> b d (seg_num seg_l) d_model', seg_l=self.seg_len)
         except AssertionError as e:
             # print('AssertionError:', e.__str__(), '\n-->use the full segment embedding')
-            # 全量集编码
-            # print('现在采用全量集编码')
             x_embed = self.linear(x)
             x_pos_embed = self.position_embedding(x)
             x_embed += x_pos_embed

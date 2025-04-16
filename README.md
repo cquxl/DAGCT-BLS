@@ -37,7 +37,7 @@ DAGCT-BLS can achieve the best prediction performance and have strong interpreta
 3. Train and test the model
 
 ```cmd
-git clone git@github.com:CQUTLangXiong/DAGCT-BLS.git
+git clone git@github.com:cquxl/DAGCT-BLS.git
 cd DAGCT-BLS
 python main.py
 ```
@@ -67,4 +67,4 @@ If you find this repo useful, please cite our paper.
 
 ## Contact
 
-If you have any questions or want to use the code, please contact xionglang@stu.cqut.edu.cn
+If you have any questions or want to use the code, please contact 20241401008@stu.cqu.edu.cn/xionglang@stu.cqut.edu.cn/840015412@qq.com

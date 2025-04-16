@@ -10,15 +10,13 @@ import random
 class BaseExp(metaclass=ABCMeta):
     """Base class for experiment
     * seed
-    * 调用模型
-    * 获取数据
     * device
     * optimizer
     * lr_scheduler
     * evaluator
     """
     def __init__(self):
-        self.setup_seed()    # 随机种子
+        self.setup_seed()   
         self.output_dir = './logs'
 
     @abstractmethod
